@@ -98,6 +98,24 @@ Wire it into an MCP client (Cursor, Cline, Goose, or any stdio-capable host):
 
 ---
 
+## A scene you’ll recognize
+
+On a long task, your agent keeps rewriting the doc it works from — a plan, a spec — across sessions
+and edits. And every so often, a line that mattered just… vanishes.
+
+*“Always ask before you delete anything.”* Gone.
+*“User data never leaves the device.”* Gone.
+*“The free tier stays free.”* Gone.
+
+Nobody meant to drop them; nobody reads all 400 lines of the diff.
+
+Aperture MCP watches the exact lines you name. Give it two versions of the doc and it won’t try to
+understand them or judge them — it just tells you which promise was there, word for word, and now
+isn’t. A tripwire, not a judge — and honest about the rest: soften a line, reword it, or change a
+number instead of deleting it, and it’ll slip past. Better you hear that now.
+
+---
+
 ## What trips it — and what slips past
 
 Aperture MCP is a **heuristic**. We measured it on our own gold corpus and we publish the numbers
