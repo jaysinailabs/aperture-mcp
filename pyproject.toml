@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aperture-mcp"
+version = "0.1.0"
+description = "A commitment tripwire for AI-edited decision docs: flags when a tracked commitment disappears, word-for-word, between two versions. MCP server + Python library. A signal, not a judge."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [{ name = "jaysinailabs" }]
+keywords = [
+    "mcp",
+    "model-context-protocol",
+    "ai-agent",
+    "agents",
+    "decision-drift",
+    "commitment",
+    "self-consistency",
+    "adr",
+    "spec",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Quality Assurance",
+]
+# `mcp` is a hard dependency of the server; the pure-Python `aperture` library has
+# zero required runtime dependencies.
+dependencies = ["mcp>=1.27.2,<2"]
+
+[project.scripts]
+aperture-mcp = "aperture.mcp_server:main"
+
+[project.urls]
+Homepage = "https://github.com/jaysinailabs/aperture-mcp"
+Repository = "https://github.com/jaysinailabs/aperture-mcp"
+Changelog = "https://github.com/jaysinailabs/aperture-mcp/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["aperture*"]
+
+[tool.setuptools.package-data]
+aperture = ["py.typed"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

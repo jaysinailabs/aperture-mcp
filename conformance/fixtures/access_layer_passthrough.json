@@ -1,0 +1,25 @@
+{
+  "case": "access_layer_passthrough",
+  "entry": "openai.tool_call",
+  "covers": ["C-AC-3"],
+  "negative": false,
+  "input": {
+    "tool": "compare",
+    "arguments": {
+      "state_a": "ship in Q3",
+      "state_b": "ship in Q4"
+    }
+  },
+  "expected": {
+    "wire": {"c4_delta_result_valid": true},
+    "forbidden_keys": ["c4", "envelope", "access_layer", "decision"],
+    "assertions": [
+      {"path": "/status", "equals": "degraded"},
+      {"path": "/provider_family", "equals": "generic"},
+      {"path": "/state_kind", "equals": "text"},
+      {"path": "/reason", "non_empty": true},
+      {"path": "/reason", "contains": "text states differ"},
+      {"path": "/anchor_violations", "equals": []}
+    ]
+  }
+}

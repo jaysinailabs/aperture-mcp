@@ -1,0 +1,19 @@
+{
+  "case": "self_consistency_provider_family_not_profile",
+  "entry": "compare_proposal",
+  "covers": ["C-SC-2"],
+  "negative": false,
+  "input": {
+    "state_a": "We must deliver feature X.",
+    "state_b": "We must deliver feature X."
+  },
+  "expected": {
+    "provider_family": "self-consistency",
+    "profile": "proposal",
+    "assertions": [
+      {"path": "/provider_family", "equals": "self-consistency"},
+      {"path": "/profile", "equals": "proposal"}
+    ],
+    "wire": {"c4_delta_result_valid": true}
+  }
+}

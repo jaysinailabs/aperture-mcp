@@ -1,0 +1,21 @@
+{
+  "case": "instrumentation_event_echo_compare",
+  "entry": "compare",
+  "covers": ["C-DR-9"],
+  "negative": false,
+  "input": {
+    "state_a": "We ship Tuesday.",
+    "state_b": "We ship Wednesday.",
+    "anchors": [],
+    "event_id": "caller-evt::trace-9f3a-opaque-NOT-uuid"
+  },
+  "expected": {
+    "event_id": "caller-evt::trace-9f3a-opaque-NOT-uuid",
+    "status": "degraded",
+    "reason_required": true,
+    "assertions": [
+      {"path": "/event_id", "equals": "caller-evt::trace-9f3a-opaque-NOT-uuid"}
+    ],
+    "wire": {"c4_delta_result_valid": true}
+  }
+}

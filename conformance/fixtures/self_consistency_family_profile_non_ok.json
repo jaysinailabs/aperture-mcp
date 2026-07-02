@@ -1,0 +1,23 @@
+{
+  "case": "self_consistency_family_profile_non_ok",
+  "entry": "compare_stance",
+  "covers": ["C-SC-1", "C-SC-4"],
+  "negative": false,
+  "input": {
+    "state_a": "I support the proposal.",
+    "state_b": "I oppose the proposal."
+  },
+  "expected": {
+    "status": "degraded",
+    "reason_required": true,
+    "provider_family": "self-consistency",
+    "profile": "stance",
+    "contains_keys": ["status", "reason", "provider_family", "state_kind", "anchor_violations", "profile"],
+    "assertions": [
+      {"path": "/provider_family", "equals": "self-consistency"},
+      {"path": "/profile", "equals": "stance"},
+      {"path": "/status", "equals": "degraded"}
+    ],
+    "wire": {"c4_delta_result_valid": true}
+  }
+}

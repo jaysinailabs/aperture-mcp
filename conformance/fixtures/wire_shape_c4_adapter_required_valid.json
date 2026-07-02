@@ -1,0 +1,16 @@
+{
+  "case": "wire_shape_c4_adapter_required_valid",
+  "entry": "compare",
+  "covers": ["C-DR-7"],
+  "negative": false,
+  "input": {
+    "state_a": "alpha",
+    "state_b": "beta"
+  },
+  "expected": {
+    "status": "degraded",
+    "wire": {
+      "c4_delta_result_valid": true
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "case": "anchor_violation_anchor_kind_all_valid",
+  "entry": "schema.validate",
+  "covers": ["C-AV-1"],
+  "negative": false,
+  "input": {
+    "schema_ref": "#/$defs/C2_AnchorKind",
+    "instances": [
+      "goal",
+      "constraint",
+      "commitment",
+      "baseline",
+      "Goal",
+      "unknown"
+    ]
+  },
+  "expected": {
+    "assertions": [
+      {"path": "/results/0/valid", "equals": true},
+      {"path": "/results/1/valid", "equals": true},
+      {"path": "/results/2/valid", "equals": true},
+      {"path": "/results/3/valid", "equals": true},
+      {"path": "/results/4/valid", "equals": false},
+      {"path": "/results/5/valid", "equals": false}
+    ]
+  }
+}

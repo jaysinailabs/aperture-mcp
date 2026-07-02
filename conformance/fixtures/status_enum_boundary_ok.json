@@ -1,0 +1,11 @@
+{
+  "case": "status_enum_boundary_ok",
+  "input": {
+    "left": "same",
+    "right": "same"
+  },
+  "expected": {
+    "status": "ok",
+    "reason_required": false
+  }
+}

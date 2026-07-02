@@ -1,0 +1,17 @@
+{
+  "case": "reason_presence_degraded",
+  "entry": "compare",
+  "covers": ["C-DR-4"],
+  "negative": false,
+  "input": {
+    "state_a": "We will ship Monday",
+    "state_b": "We might ship later"
+  },
+  "expected": {
+    "status": "degraded",
+    "reason_required": true,
+    "assertions": [
+      { "path": "/reason", "non_empty": true }
+    ]
+  }
+}

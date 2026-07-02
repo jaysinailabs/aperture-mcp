@@ -1,0 +1,26 @@
+{
+  "case": "three_new_values_paused_wire_receivable",
+  "entry": "schema.validate",
+  "covers": ["C-TN-3", "C-DR-3"],
+  "negative": false,
+  "input": {
+    "schema_ref": "#/$defs/C3_Status",
+    "instances": [
+      "PAUSED",
+      "paused",
+      "Paused",
+      "BLOCKED",
+      "DROPPED_SILENTLY"
+    ]
+  },
+  "expected": {
+    "summary": "C-TN-3 RECEIVER / WIRE-LEGAL limb: even though v0.2 does not ORIGINATE PAUSED, raw PAUSED remains schema-RECEIVABLE — the bare string 'PAUSED' validates valid:true against #/$defs/C3_Status because PAUSED is a legal C3_Status wire value per C-DR-3 (the enum retains it for forward-compat + receiver/aggregation propagation per C-AV-8). instances[0] 'PAUSED' => valid:true is the load-bearing receivability assertion. The receivability is for the EXACT reserved literal only, not a loose match: case-drift 'paused' (idx 1) and 'Paused' (idx 2) are NOT receivable (valid:false), mirroring C-DR-2 case discipline. instances[3..4] BLOCKED/DROPPED_SILENTLY confirm the values the impl actually originates are themselves wire-legal — i.e. wire-legality does NOT imply originability (the two are distinct: wire-receivable superset { ...,PAUSED } vs v0.2-originable subset { ...,no PAUSED }). The originate (MUST NOT) limb is pinned in three_new_values_paused_reserved_not_originated.json.",
+    "assertions": [
+      { "path": "/results/0/valid", "equals": true },
+      { "path": "/results/1/valid", "equals": false },
+      { "path": "/results/2/valid", "equals": false },
+      { "path": "/results/3/valid", "equals": true },
+      { "path": "/results/4/valid", "equals": true }
+    ]
+  }
+}

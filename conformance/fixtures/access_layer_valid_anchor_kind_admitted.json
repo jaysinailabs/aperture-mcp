@@ -1,0 +1,19 @@
+{
+  "case": "access_layer_valid_anchor_kind_admitted",
+  "entry": "access.anchor_admission",
+  "covers": ["C-AC-4"],
+  "negative": false,
+  "input": {
+    "anchors": [
+      {"kind": "goal", "id": "g1"}
+    ]
+  },
+  "expected": {
+    "contains_keys": ["rejected", "anchors"],
+    "assertions": [
+      {"path": "/rejected", "equals": false},
+      {"path": "/anchors/0/kind", "equals": "goal"},
+      {"path": "/anchors/0/id", "equals": "g1"}
+    ]
+  }
+}

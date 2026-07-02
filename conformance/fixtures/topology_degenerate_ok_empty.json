@@ -1,0 +1,25 @@
+{
+  "case": "topology_degenerate_ok_empty",
+  "entry": "topology.analyze",
+  "covers": ["C-TP-5"],
+  "negative": false,
+  "input": {
+    "graph": {
+      "nodes": ["solo"],
+      "edges": []
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "contains_keys": ["status", "cut_vertices", "reason", "supported_metrics"],
+    "topology": {
+      "cut_vertices": [],
+      "supported_metrics": ["cut_vertices"]
+    },
+    "assertions": [
+      {"path": "/status", "equals": "ok"},
+      {"path": "/cut_vertices", "equals": []},
+      {"path": "/supported_metrics", "equals": ["cut_vertices"]}
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "case": "access_layer_bad_anchor_kind_rejected",
+  "entry": "access.anchor_admission",
+  "covers": ["C-AC-4"],
+  "negative": true,
+  "input": {
+    "anchors": [
+      {"kind": "deadline", "id": "a1"}
+    ]
+  },
+  "expected": {
+    "contains_keys": ["rejected", "reason"],
+    "forbidden_keys": ["anchors"],
+    "assertions": [
+      {"path": "/rejected", "equals": true},
+      {"path": "/reason", "non_empty": true}
+    ]
+  }
+}

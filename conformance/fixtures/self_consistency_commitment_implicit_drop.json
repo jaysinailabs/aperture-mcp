@@ -1,0 +1,29 @@
+{
+  "case": "self_consistency_commitment_implicit_drop",
+  "entry": "compare_commitment",
+  "covers": ["C-SC-3"],
+  "negative": false,
+  "input": {
+    "state_a": "I commit to ship the payment API by Friday.",
+    "state_b": "We are exploring options."
+  },
+  "expected": {
+    "status": "DROPPED_SILENTLY",
+    "reason_required": true,
+    "provider_family": "self-consistency",
+    "profile": "commitment",
+    "anchor_violations": {
+      "count": 1,
+      "contains": [
+        {"anchor_id": "implicit", "kind": "commitment", "status": "DROPPED_SILENTLY"}
+      ],
+      "forbidden_keys": ["severity", "message", "evidence", "detected_at"]
+    },
+    "assertions": [
+      {"path": "/status", "equals": "DROPPED_SILENTLY"},
+      {"path": "/provider_family", "equals": "self-consistency"},
+      {"path": "/profile", "equals": "commitment"}
+    ],
+    "wire": {"c4_delta_result_valid": true}
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "case": "anchor_violation_reject_rich_payload",
+  "entry": "schema.validate",
+  "covers": ["C-AV-5"],
+  "negative": true,
+  "input": {
+    "schema_ref": "#/$defs/C4_AnchorViolation",
+    "instances": [
+      {
+        "anchor_id": "budget-cap",
+        "kind": "constraint",
+        "status": "BLOCKED",
+        "severity": "high",
+        "message": "constraint dropped",
+        "evidence": ["state_a-line-3"],
+        "detected_at": "2026-06-12T00:00:00+00:00"
+      },
+      {
+        "anchor_id": "budget-cap",
+        "kind": "constraint",
+        "status": "BLOCKED"
+      }
+    ]
+  },
+  "expected": {
+    "assertions": [
+      {"path": "/results/0/valid", "equals": false},
+      {"path": "/results/0/error", "contains": "Additional properties"},
+      {"path": "/results/1/valid", "equals": true}
+    ]
+  }
+}

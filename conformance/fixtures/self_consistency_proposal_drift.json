@@ -1,0 +1,23 @@
+{
+  "case": "self_consistency_proposal_drift",
+  "entry": "compare_proposal",
+  "covers": ["C-SC-3"],
+  "negative": false,
+  "input": {
+    "state_a": "We must deliver X.",
+    "state_b": "We should deliver X."
+  },
+  "expected": {
+    "status": "degraded",
+    "reason_required": true,
+    "provider_family": "self-consistency",
+    "profile": "proposal",
+    "assertions": [
+      {"path": "/status", "equals": "degraded"},
+      {"path": "/provider_family", "equals": "self-consistency"},
+      {"path": "/profile", "equals": "proposal"},
+      {"path": "/reason", "non_empty": true}
+    ],
+    "wire": {"c4_delta_result_valid": true}
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "case": "status_enum_reject_case_drift",
+  "entry": "schema.validate",
+  "covers": ["C-DR-1", "C-DR-2", "C-DR-3"],
+  "negative": true,
+  "input": {
+    "schema_ref": "#/$defs/C3_Status",
+    "instances": [
+      "blocked",
+      "OK",
+      "ok "
+    ]
+  },
+  "expected": {
+    "assertions": [
+      {"path": "/results/0/valid", "equals": false},
+      {"path": "/results/1/valid", "equals": false},
+      {"path": "/results/2/valid", "equals": false}
+    ]
+  }
+}

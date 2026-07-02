@@ -1,0 +1,29 @@
+{
+  "case": "wire_shape_compare_signature_two_arg_anchors",
+  "entry": "compare",
+  "covers": ["C-DR-10", "C-AV-6", "C-AV-10"],
+  "negative": false,
+  "input": {
+    "state_a": "we honor constraintZ here",
+    "state_b": "we dropped it",
+    "anchors": [
+      {"kind": "constraint", "id": "constraintZ"}
+    ]
+  },
+  "expected": {
+    "status": "BLOCKED",
+    "reason_required": true,
+    "contains_keys": ["status", "reason", "provider_family", "state_kind", "anchor_violations"],
+    "forbidden_keys": ["delta", "anchor_reaffirmations", "per_view_findings", "cross_view_conflicts"],
+    "anchor_violations": {
+      "count": 1,
+      "contains": [
+        {"anchor_id": "constraintZ", "kind": "constraint", "status": "BLOCKED"}
+      ]
+    },
+    "assertions": [
+      {"path": "/status", "equals": "BLOCKED"},
+      {"path": "/profile", "absent": true}
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "case": "self_consistency_stance_reversal",
+  "entry": "compare_stance",
+  "covers": ["C-SC-3"],
+  "negative": false,
+  "input": {
+    "state_a": "I support the merger.",
+    "state_b": "I oppose the merger."
+  },
+  "expected": {
+    "status": "degraded",
+    "reason_required": true,
+    "provider_family": "self-consistency",
+    "profile": "stance",
+    "assertions": [
+      {"path": "/status", "equals": "degraded"},
+      {"path": "/provider_family", "equals": "self-consistency"},
+      {"path": "/profile", "equals": "stance"},
+      {"path": "/reason", "non_empty": true}
+    ],
+    "wire": {"c4_delta_result_valid": true}
+  }
+}

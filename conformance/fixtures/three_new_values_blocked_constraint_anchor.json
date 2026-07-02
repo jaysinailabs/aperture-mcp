@@ -1,0 +1,30 @@
+{
+  "case": "three_new_values_blocked_constraint_anchor",
+  "entry": "compare",
+  "covers": ["C-TN-1", "C-AV-6"],
+  "negative": false,
+  "provisional": true,
+  "input": {
+    "state_a": "we must keep latency under 200ms; constraint-latency holds",
+    "state_b": "we relaxed the target entirely now",
+    "anchors": [
+      { "kind": "constraint", "id": "constraint-latency" }
+    ]
+  },
+  "expected": {
+    "summary": "C-TN-1 (MUST, PROVISIONAL): pins that the BLOCKED MECHANISM/SHAPE is producible via the registry-active constraint-anchor violation path of compare. PROVISIONAL per C-TN-2: this proves mechanism-producible + fixture-covered ONLY; it does NOT assert BLOCKED is 'validated/empirically re-verified' (EXP-003 empirical re-sampling is experiment-track, pending, out of v0.1 code scope — only the five legacy values are EXP-003-validated). Mechanism shape pinned: /status==BLOCKED bound to exactly one anchor_violation {anchor_id=constraint-latency, kind=constraint, status=BLOCKED, detail non-empty}.",
+    "status": "BLOCKED",
+    "reason_required": true,
+    "provider_family": "generic",
+    "state_kind": "text",
+    "anchor_violations": {
+      "count": 1,
+      "contains": [
+        { "anchor_id": "constraint-latency", "kind": "constraint", "status": "BLOCKED" }
+      ]
+    },
+    "assertions": [
+      {"path": "/status", "equals": "BLOCKED"}
+    ]
+  }
+}

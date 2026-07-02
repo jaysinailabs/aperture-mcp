@@ -1,0 +1,31 @@
+{
+  "case": "anchor_violation_aggregation_surface_bind",
+  "entry": "compare",
+  "covers": ["C-AV-8", "C-AV-9", "C-AV-10"],
+  "negative": false,
+  "input": {
+    "state_a": "we honor budget-cap and deliver-mvp on time",
+    "state_b": "we move on without those",
+    "anchors": [
+      {"kind": "constraint", "id": "budget-cap"},
+      {"kind": "commitment", "id": "deliver-mvp"}
+    ]
+  },
+  "expected": {
+    "summary": "Aggregation over two violations of DIFFERENT severity: constraint budget-cap -> BLOCKED (P22 rank 7), commitment deliver-mvp -> DROPPED_SILENTLY (P22 rank 4). C-AV-8 (parent status = P22 total-order MAX): the parent /status MUST be the higher of the two = BLOCKED, NOT the lower DROPPED_SILENTLY and NOT an echo of violation[0]'s position; pinned by asserting /status == BLOCKED while a strictly-lower-ranked violation (DROPPED_SILENTLY) is simultaneously present and DID NOT win — so a max-selection bug that returned DROPPED_SILENTLY (e.g. min/last-wins) FAILS here. C-AV-9 (overshadowed DROPPED_SILENTLY still surfaces): the commitment's DROPPED_SILENTLY is BELOW BLOCKED in the total order and so is NOT the parent status, yet it MUST still appear in anchor_violations[] (reject-silent-drift). Pinned by count==2 AND a partial match {anchor_id:deliver-mvp,kind:commitment,status:DROPPED_SILENTLY} while /status == BLOCKED — i.e. the detected-but-overshadowed violation is observably retained, not dropped. A 'detect then discard the loser' bug FAILS here. C-AV-10 (UNCONDITIONAL binding: status MUST NOT be lower than max violation status) — RESIDUAL (invariant-by-construction / partial-black-box): the SATISFYING direction is observable here (parent /status == BLOCKED == max(violations) >= every violation status, so the bound holds and is asserted), but the FAILING direction is UNCONSTRUCTABLE through the public API: C-AV-10 is enforced inside DeltaResult.__post_init__ (aperture/core.py), which RAISES ValueError('C-AV-10 violation: ...') when status_rank < max_violation_rank. A black-box fixture therefore CANNOT build a DeltaResult whose status is below its max violation to prove the guard 'can fail' — the constructor refuses to instantiate the counterexample. So C-AV-10's no-undershoot guarantee is verified black-box only in its positive limb; the negative limb (that a too-low status is rejected) is a constructor-level invariant verifiable solely by source/unit inspection of __post_init__, not by wire fixture. This fixture pins the positive limb honestly and records the negative limb as the residual. Wire C4_DeltaResult must validate against #/$defs/C4_DeltaResult.",
+    "status": "BLOCKED",
+    "reason_required": true,
+    "provider_family": "generic",
+    "anchor_violations": {
+      "count": 2,
+      "contains": [
+        {"anchor_id": "budget-cap", "kind": "constraint", "status": "BLOCKED"},
+        {"anchor_id": "deliver-mvp", "kind": "commitment", "status": "DROPPED_SILENTLY"}
+      ]
+    },
+    "assertions": [
+      {"path": "/status", "equals": "BLOCKED"}
+    ],
+    "wire": {"c4_delta_result_valid": true}
+  }
+}

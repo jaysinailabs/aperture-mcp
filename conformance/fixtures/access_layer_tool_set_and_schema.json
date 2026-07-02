@@ -1,0 +1,48 @@
+{
+  "case": "access_layer_tool_set_and_schema",
+  "entry": "openai.tools",
+  "covers": ["C-AC-1", "C-AC-2"],
+  "negative": false,
+  "input": {},
+  "expected": {
+    "tools": {
+      "names_exact": ["health", "compare", "compare_proposal", "compare_stance", "compare_commitment"]
+    },
+    "assertions": [
+      {"path": "/0/function/parameters/properties/state_a", "absent": true},
+
+      {"path": "/1/function/parameters/type", "equals": "object"},
+      {"path": "/1/function/parameters/required", "equals": ["state_a", "state_b"]},
+      {"path": "/1/function/parameters/additionalProperties", "equals": false},
+      {"path": "/1/function/parameters/properties/state_a/type", "equals": "string"},
+      {"path": "/1/function/parameters/properties/state_b/type", "equals": "string"},
+      {"path": "/1/function/parameters/properties/anchors/type", "equals": "array"},
+      {"path": "/1/function/parameters/properties/anchors/items/type", "equals": "object"},
+      {"path": "/1/function/parameters/properties/anchors/items/required", "equals": ["kind", "id"]},
+      {"path": "/1/function/parameters/properties/anchors/items/additionalProperties", "equals": false},
+      {"path": "/1/function/parameters/properties/anchors/items/properties/kind/enum", "equals": ["goal", "constraint", "commitment", "baseline"]},
+      {"path": "/1/function/parameters/properties/anchors/items/properties/id/type", "equals": "string"},
+
+      {"path": "/2/function/parameters/required", "equals": ["state_a", "state_b"]},
+      {"path": "/2/function/parameters/additionalProperties", "equals": false},
+      {"path": "/2/function/parameters/properties/state_a/type", "equals": "string"},
+      {"path": "/2/function/parameters/properties/state_b/type", "equals": "string"},
+      {"path": "/2/function/parameters/properties/anchors/items/additionalProperties", "equals": false},
+      {"path": "/2/function/parameters/properties/anchors/items/properties/kind/enum", "equals": ["goal", "constraint", "commitment", "baseline"]},
+
+      {"path": "/3/function/parameters/required", "equals": ["state_a", "state_b"]},
+      {"path": "/3/function/parameters/additionalProperties", "equals": false},
+      {"path": "/3/function/parameters/properties/state_a/type", "equals": "string"},
+      {"path": "/3/function/parameters/properties/state_b/type", "equals": "string"},
+      {"path": "/3/function/parameters/properties/anchors/items/additionalProperties", "equals": false},
+      {"path": "/3/function/parameters/properties/anchors/items/properties/kind/enum", "equals": ["goal", "constraint", "commitment", "baseline"]},
+
+      {"path": "/4/function/parameters/required", "equals": ["state_a", "state_b"]},
+      {"path": "/4/function/parameters/additionalProperties", "equals": false},
+      {"path": "/4/function/parameters/properties/state_a/type", "equals": "string"},
+      {"path": "/4/function/parameters/properties/state_b/type", "equals": "string"},
+      {"path": "/4/function/parameters/properties/anchors/items/additionalProperties", "equals": false},
+      {"path": "/4/function/parameters/properties/anchors/items/properties/kind/enum", "equals": ["goal", "constraint", "commitment", "baseline"]}
+    ]
+  }
+}

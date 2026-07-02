@@ -1,0 +1,29 @@
+{
+  "case": "anchor_violation_goal_baseline_degraded",
+  "entry": "compare",
+  "covers": ["C-AV-6"],
+  "negative": false,
+  "input": {
+    "state_a": "we pursue north-star while holding quality-baseline",
+    "state_b": "we change direction entirely",
+    "anchors": [
+      {"kind": "goal", "id": "north-star"},
+      {"kind": "baseline", "id": "quality-baseline"}
+    ]
+  },
+  "expected": {
+    "status": "degraded",
+    "reason_required": true,
+    "provider_family": "generic",
+    "anchor_violations": {
+      "count": 2,
+      "contains": [
+        {"anchor_id": "north-star", "kind": "goal", "status": "degraded"},
+        {"anchor_id": "quality-baseline", "kind": "baseline", "status": "degraded"}
+      ]
+    },
+    "assertions": [
+    ],
+    "wire": {"c4_delta_result_valid": true}
+  }
+}

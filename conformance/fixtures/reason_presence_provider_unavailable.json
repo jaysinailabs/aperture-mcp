@@ -1,0 +1,28 @@
+{
+  "case": "reason_presence_provider_unavailable",
+  "entry": "topology.metric",
+  "covers": ["C-DR-4", "C-TP-4"],
+  "negative": false,
+  "input": {
+    "metric": "bridges",
+    "graph": {
+      "edges": [
+        { "src": "a", "dst": "b", "label": "depends_on" },
+        { "src": "b", "dst": "c", "label": "depends_on" }
+      ]
+    }
+  },
+  "expected": {
+    "status": "provider_unavailable",
+    "reason_required": true,
+    "topology": {
+      "cut_vertices": [],
+      "supported_metrics": ["cut_vertices"]
+    },
+    "assertions": [
+      { "path": "/reason", "non_empty": true },
+      { "path": "/reason", "contains": "bridges" },
+      { "path": "/supported_metrics", "equals": ["cut_vertices"] }
+    ]
+  }
+}

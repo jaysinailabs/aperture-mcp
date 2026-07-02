@@ -1,0 +1,118 @@
+{
+  "case": "delta_history_similar_context_exact_structural",
+  "entry": "delta_history",
+  "covers": ["C-DH-4"],
+  "negative": false,
+  "input": {
+    "clock": [
+      "2026-01-01T00:00:00+00:00",
+      "2026-01-02T00:00:00+00:00",
+      "2026-01-03T00:00:00+00:00"
+    ],
+    "operations": [
+      {
+        "op": "put",
+        "result": {
+          "status": "ok",
+          "reason": "",
+          "provider_family": "self-consistency",
+          "state_kind": "text",
+          "anchor_violations": []
+        },
+        "signature": {
+          "state_kind": "text",
+          "anchors": [{"kind": "goal", "id": "G"}],
+          "context_key": "ctx-1"
+        },
+        "as": "rec_struct_exact"
+      },
+      {
+        "op": "put",
+        "result": {
+          "status": "ok",
+          "reason": "",
+          "provider_family": "self-consistency",
+          "state_kind": "text",
+          "anchor_violations": []
+        },
+        "signature": {
+          "state_kind": "text",
+          "anchors": [{"kind": "goal", "id": "G"}],
+          "context_key": "ctx-2"
+        },
+        "as": "rec_struct_only"
+      },
+      {
+        "op": "put",
+        "result": {
+          "status": "ok",
+          "reason": "",
+          "provider_family": "self-consistency",
+          "state_kind": "text",
+          "anchor_violations": []
+        },
+        "signature": {
+          "state_kind": "text",
+          "anchors": [{"kind": "goal", "id": "H"}],
+          "context_key": "ctx-1"
+        },
+        "as": "rec_other_structure"
+      },
+      {
+        "op": "similar_context",
+        "signature": {
+          "state_kind": "text",
+          "anchors": [{"kind": "goal", "id": "G"}],
+          "context_key": "ctx-1"
+        },
+        "params": {"mode": "structural"},
+        "as": "structural_matches"
+      },
+      {
+        "op": "similar_context",
+        "signature": {
+          "state_kind": "text",
+          "anchors": [{"kind": "goal", "id": "G"}],
+          "context_key": "ctx-1"
+        },
+        "params": {"mode": "exact"},
+        "as": "exact_matches"
+      }
+    ]
+  },
+  "expected": {
+    "assertions": [
+      {
+        "path": "/outputs/structural_matches",
+        "equals": [
+          {
+            "record_id": "rec-1",
+            "result": {"status": "ok", "reason": "", "provider_family": "self-consistency", "state_kind": "text", "anchor_violations": []},
+            "signature": {"state_kind": "text", "anchor_ids": ["goal:G"], "context_key": "ctx-1"},
+            "at": "2026-01-01T00:00:00+00:00",
+            "tombstoned": false
+          },
+          {
+            "record_id": "rec-2",
+            "result": {"status": "ok", "reason": "", "provider_family": "self-consistency", "state_kind": "text", "anchor_violations": []},
+            "signature": {"state_kind": "text", "anchor_ids": ["goal:G"], "context_key": "ctx-2"},
+            "at": "2026-01-02T00:00:00+00:00",
+            "tombstoned": false
+          }
+        ]
+      },
+      {
+        "path": "/outputs/exact_matches",
+        "equals": [
+          {
+            "record_id": "rec-1",
+            "result": {"status": "ok", "reason": "", "provider_family": "self-consistency", "state_kind": "text", "anchor_violations": []},
+            "signature": {"state_kind": "text", "anchor_ids": ["goal:G"], "context_key": "ctx-1"},
+            "at": "2026-01-01T00:00:00+00:00",
+            "tombstoned": false
+          }
+        ]
+      }
+    ]
+  }
+}

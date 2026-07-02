@@ -1,0 +1,33 @@
+{
+  "case": "three_new_values_paused_reserved_not_originated",
+  "entry": "compare",
+  "covers": ["C-TN-3"],
+  "negative": false,
+  "provisional": true,
+  "input": {
+    "state_a": "constraint-budget holds and we commit to deliver feature-x",
+    "state_b": "all bets are off now",
+    "anchors": [
+      { "kind": "constraint", "id": "constraint-budget" },
+      { "kind": "commitment", "id": "feature-x" }
+    ]
+  },
+  "expected": {
+    "summary": "C-TN-3 ORIGINATE limb (provisional/partial-black-box): v0.2 MUST NOT ORIGINATE PAUSED — it has no legitimate v0.2 origination path (multi-view cross_view_conflicts deferred). This compare path drives a constraint+commitment anchor-violation aggregation; the impl's OWN diagnostic logic originates BLOCKED (P22-aggregated from BLOCKED constraint + DROPPED_SILENTLY commitment), NOT PAUSED. Because the runner assertion grammar has no not_equals, the != PAUSED claim is pinned positively: /status equals the legitimately-originated BLOCKED (a mutually-exclusive scalar, so == BLOCKED transitively proves != PAUSED on this path). Each per-violation status is the legitimate BLOCKED/DROPPED_SILENTLY, never PAUSED — pinned by count==2 + contains partial matches. RESIDUAL (honesty): a single fixture (or finite fixture set) cannot prove non-origination over ALL inputs — it pins what is observable on representative paths only; full non-origination is a structural/source-level invariant (no PAUSED origination code path in v0.1/v0.2). The wire-receivability limb is in three_new_values_paused_wire_receivable.json.",
+    "status": "BLOCKED",
+    "reason_required": true,
+    "anchor_violations": {
+      "count": 2,
+      "contains": [
+        { "kind": "constraint", "status": "BLOCKED" },
+        { "kind": "commitment", "status": "DROPPED_SILENTLY" }
+      ]
+    },
+    "assertions": [
+      {"path": "/status", "equals": "BLOCKED"}
+    ],
+    "wire": {
+      "c4_delta_result_valid": true
+    }
+  }
+}

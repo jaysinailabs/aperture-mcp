@@ -1,0 +1,27 @@
+{
+  "case": "anchor_violation_shape_required",
+  "entry": "compare",
+  "covers": ["C-AV-3"],
+  "negative": false,
+  "input": {
+    "state_a": "we keep budget-cap and ship",
+    "state_b": "we ship without it",
+    "anchors": [
+      {"kind": "constraint", "id": "budget-cap"}
+    ]
+  },
+  "expected": {
+    "status": "BLOCKED",
+    "reason_required": true,
+    "provider_family": "generic",
+    "anchor_violations": {
+      "count": 1,
+      "contains": [
+        {"anchor_id": "budget-cap", "kind": "constraint", "status": "BLOCKED"}
+      ]
+    },
+    "assertions": [
+    ],
+    "wire": {"c4_delta_result_valid": true}
+  }
+}

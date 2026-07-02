@@ -1,0 +1,4 @@
+include LICENSE README.md README.zh-CN.md CHANGELOG.md CONTRIBUTING.md CONTRIBUTING.zh-CN.md VERSIONING.md SECURITY.md CODE_OF_CONDUCT.md llms.txt server.json
+recursive-include conformance *.py *.json
+recursive-include examples *.py *.md
+recursive-include docs *.md

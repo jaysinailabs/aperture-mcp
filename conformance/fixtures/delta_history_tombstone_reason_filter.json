@@ -1,0 +1,76 @@
+{
+  "case": "delta_history_tombstone_reason_filter",
+  "entry": "delta_history",
+  "covers": ["C-DH-5"],
+  "negative": false,
+  "input": {
+    "clock": [
+      "2026-01-01T00:00:00+00:00",
+      "2026-01-02T00:00:00+00:00"
+    ],
+    "operations": [
+      {
+        "op": "put",
+        "result": {
+          "status": "ok",
+          "reason": "",
+          "provider_family": "self-consistency",
+          "state_kind": "text",
+          "anchor_violations": []
+        },
+        "signature": {
+          "state_kind": "text"
+        },
+        "as": "put_record"
+      },
+      {
+        "op": "tombstone",
+        "record": "$put_record",
+        "reason": "superseded by a newer decision",
+        "as": "tombstoned_record"
+      },
+      {
+        "op": "query",
+        "params": {},
+        "as": "default_query"
+      },
+      {
+        "op": "query",
+        "params": {"include_tombstoned": true},
+        "as": "include_tombstoned_query"
+      },
+      {
+        "op": "snapshot",
+        "as": "after_snapshot"
+      }
+    ]
+  },
+  "expected": {
+    "assertions": [
+      {"path": "/outputs/tombstoned_record/record_id", "equals": "rec-1"},
+      {"path": "/outputs/tombstoned_record/tombstoned", "equals": true},
+      {"path": "/outputs/tombstoned_record/tombstone_reason", "equals": "superseded by a newer decision"},
+      {"path": "/outputs/default_query", "equals": []},
+      {"path": "/outputs/include_tombstoned_query/0/record_id", "equals": "rec-1"},
+      {"path": "/outputs/include_tombstoned_query/0/tombstoned", "equals": true},
+      {
+        "path": "/outputs/include_tombstoned_query",
+        "equals": [
+          {
+            "record_id": "rec-1",
+            "result": {"status": "ok", "reason": "", "provider_family": "self-consistency", "state_kind": "text", "anchor_violations": []},
+            "signature": {"state_kind": "text", "anchor_ids": []},
+            "at": "2026-01-01T00:00:00+00:00",
+            "tombstoned": true,
+            "tombstone_reason": "superseded by a newer decision",
+            "tombstoned_at": "2026-01-02T00:00:00+00:00"
+          }
+        ]
+      },
+      {"path": "/outputs/after_snapshot/counter", "equals": 1},
+      {"path": "/outputs/after_snapshot/records/0/record_id", "equals": "rec-1"},
+      {"path": "/outputs/after_snapshot/records/0/tombstoned", "equals": true},
+      {"path": "/outputs/after_snapshot/records/0/tombstone_reason", "equals": "superseded by a newer decision"}
+    ]
+  }
+}

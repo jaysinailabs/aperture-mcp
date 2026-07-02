@@ -1,0 +1,31 @@
+{
+  "case": "status_enum_all_eight_valid",
+  "entry": "schema.validate",
+  "covers": ["C-DR-1", "C-DR-3"],
+  "negative": false,
+  "input": {
+    "schema_ref": "#/$defs/C3_Status",
+    "instances": [
+      "ok",
+      "degraded",
+      "incomparable",
+      "domain_mismatch",
+      "provider_unavailable",
+      "BLOCKED",
+      "DROPPED_SILENTLY",
+      "PAUSED"
+    ]
+  },
+  "expected": {
+    "assertions": [
+      {"path": "/results/0/valid", "equals": true},
+      {"path": "/results/1/valid", "equals": true},
+      {"path": "/results/2/valid", "equals": true},
+      {"path": "/results/3/valid", "equals": true},
+      {"path": "/results/4/valid", "equals": true},
+      {"path": "/results/5/valid", "equals": true},
+      {"path": "/results/6/valid", "equals": true},
+      {"path": "/results/7/valid", "equals": true}
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "case": "topology_supported_metric_only_cut_vertices",
+  "entry": "topology.analyze",
+  "covers": ["C-TP-1"],
+  "negative": false,
+  "input": {
+    "graph": {
+      "edges": [
+        {"src": "a", "dst": "b", "label": "depends_on"}
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "contains_keys": ["status", "cut_vertices", "reason", "supported_metrics"],
+    "topology": {
+      "supported_metrics": ["cut_vertices"],
+      "forbidden_keys": [
+        "severity",
+        "impact",
+        "impact_radius",
+        "priority",
+        "rank",
+        "score",
+        "should_fix",
+        "suggested_action",
+        "disposition"
+      ]
+    },
+    "assertions": [
+      {"path": "/supported_metrics", "equals": ["cut_vertices"]}
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "case": "wire_shape_native_minimal_keys",
+  "entry": "compare",
+  "covers": ["C-DR-5"],
+  "negative": false,
+  "input": {
+    "state_a": "alpha",
+    "state_b": "beta"
+  },
+  "expected": {
+    "status": "degraded",
+    "contains_keys": [
+      "status",
+      "reason",
+      "provider_family",
+      "state_kind",
+      "anchor_violations"
+    ],
+    "forbidden_keys": [
+      "delta",
+      "anchor_reaffirmations",
+      "per_view_findings",
+      "cross_view_conflicts"
+    ],
+    "assertions": [
+      {"path": "/anchor_violations", "equals": []},
+      {"path": "/profile", "absent": true},
+      {"path": "/event_id", "absent": true}
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "case": "topology_g1a_no_rich_fields",
+  "entry": "topology.analyze",
+  "covers": ["C-TP-2"],
+  "negative": false,
+  "input": {
+    "graph": {
+      "edges": [
+        {"src": "a", "dst": "b", "label": "depends_on"},
+        {"src": "b", "dst": "c", "label": "depends_on"}
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "contains_keys": ["status", "cut_vertices", "reason", "supported_metrics"],
+    "forbidden_keys": [
+      "severity",
+      "impact",
+      "impact_radius",
+      "priority",
+      "rank",
+      "score",
+      "should_fix",
+      "suggested_action",
+      "disposition"
+    ],
+    "topology": {
+      "cut_vertices": ["b"],
+      "forbidden_keys": [
+        "severity",
+        "impact",
+        "impact_radius",
+        "priority",
+        "rank",
+        "score",
+        "should_fix",
+        "suggested_action",
+        "disposition"
+      ]
+    }
+  }
+}

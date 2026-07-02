@@ -1,0 +1,49 @@
+{
+  "case": "topology_projection_structural_subset",
+  "entry": "topology.analyze",
+  "covers": ["C-TP-6"],
+  "negative": false,
+  "input": {
+    "graph": {
+      "edges": [
+        {"src": "a", "dst": "b", "label": "depends_on"},
+        {"src": "b", "dst": "c", "label": "refers_to"},
+        {"src": "a", "dst": "c", "label": "contradicts"},
+        {"src": "a", "dst": "c", "label": "temporal"},
+        {"src": "a", "dst": "c", "label": "custom_label"},
+        {"src": "b", "dst": "b", "label": "depends_on"},
+        {"src": "a", "dst": "b", "label": "depends_on"},
+
+        {"src": "d", "dst": "e", "label": "extends"},
+        {"src": "e", "dst": "f", "label": "extends"},
+
+        {"src": "g", "dst": "h", "label": "aggregates"},
+        {"src": "h", "dst": "i", "label": "aggregates"},
+
+        {"src": "j", "dst": "k", "label": "revokes"},
+        {"src": "k", "dst": "l", "label": "revokes"}
+      ]
+    }
+  },
+  "expected": {
+    "status": "ok",
+    "topology": {
+      "cut_vertices": ["b", "e", "h", "k"],
+      "forbidden_keys": [
+        "severity",
+        "impact",
+        "impact_radius",
+        "priority",
+        "rank",
+        "score",
+        "should_fix",
+        "suggested_action",
+        "disposition"
+      ]
+    },
+    "assertions": [
+      {"path": "/status", "equals": "ok"},
+      {"path": "/cut_vertices", "equals": ["b", "e", "h", "k"]}
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "case": "delta_history_compare_not_implicit_write",
+  "entry": "delta_history",
+  "covers": ["C-DH-2"],
+  "negative": false,
+  "input": {
+    "clock": ["2026-01-01T00:00:00+00:00"],
+    "operations": [
+      {
+        "op": "query",
+        "params": {},
+        "as": "before_put"
+      },
+      {
+        "op": "put",
+        "result": {
+          "entry": "compare",
+          "input": {
+            "state_a": "We must ship feature X.",
+            "state_b": "We could perhaps ship feature X."
+          }
+        },
+        "signature": {
+          "state_kind": "text"
+        },
+        "as": "put_record"
+      },
+      {
+        "op": "query",
+        "params": {},
+        "as": "after_put"
+      },
+      {
+        "op": "snapshot",
+        "as": "after_snapshot"
+      }
+    ]
+  },
+  "expected": {
+    "assertions": [
+      {"path": "/outputs/before_put", "equals": []},
+      {"path": "/outputs/put_record/record_id", "equals": "rec-1"},
+      {"path": "/outputs/after_put/0/record_id", "equals": "rec-1"},
+      {"path": "/outputs/after_put/0/result/status", "equals": "degraded"},
+      {"path": "/outputs/after_put/0/result/reason", "contains": "text states differ"},
+      {"path": "/outputs/after_put/0/result/provider_family", "equals": "generic"},
+      {"path": "/outputs/after_put/0/result/state_kind", "equals": "text"},
+      {"path": "/outputs/after_put/0/result/anchor_violations", "equals": []},
+      {"path": "/outputs/after_put/0/signature/state_kind", "equals": "text"},
+      {"path": "/outputs/after_put/0/signature/anchor_ids", "equals": []},
+      {"path": "/outputs/after_put/0/at", "equals": "2026-01-01T00:00:00+00:00"},
+      {"path": "/outputs/after_put/0/tombstoned", "equals": false},
+      {"path": "/outputs/after_snapshot/counter", "equals": 1},
+      {"path": "/outputs/after_snapshot/records/0/record_id", "equals": "rec-1"}
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "case": "three_new_values_dropped_commitment_anchor",
+  "entry": "compare_commitment",
+  "covers": ["C-TN-1", "C-AV-6"],
+  "negative": false,
+  "provisional": true,
+  "input": {
+    "state_a": "we commit to ship-the-audit-log by Q3",
+    "state_b": "we will revisit the roadmap later",
+    "anchors": [
+      { "kind": "commitment", "id": "ship-the-audit-log" }
+    ]
+  },
+  "expected": {
+    "summary": "C-TN-1 (MUST, PROVISIONAL): pins that the DROPPED_SILENTLY MECHANISM/SHAPE is producible via the commitment self-consistency profile's silently-abandoned-commitment path of compare_commitment. PROVISIONAL per C-TN-2: this proves mechanism-producible + fixture-covered ONLY; it does NOT assert DROPPED_SILENTLY is 'validated/empirically re-verified' (EXP-003 empirical re-sampling is experiment-track, pending, out of v0.1 code scope — only the five legacy values are EXP-003-validated). Mechanism shape pinned: /status==DROPPED_SILENTLY bound to exactly one anchor_violation {anchor_id=ship-the-audit-log, kind=commitment, status=DROPPED_SILENTLY, detail non-empty}, provider_family=self-consistency, profile=commitment.",
+    "status": "DROPPED_SILENTLY",
+    "reason_required": true,
+    "provider_family": "self-consistency",
+    "profile": "commitment",
+    "state_kind": "text",
+    "anchor_violations": {
+      "count": 1,
+      "contains": [
+        { "anchor_id": "ship-the-audit-log", "kind": "commitment", "status": "DROPPED_SILENTLY" }
+      ]
+    },
+    "assertions": [
+      {"path": "/status", "equals": "DROPPED_SILENTLY"}
+    ]
+  }
+}

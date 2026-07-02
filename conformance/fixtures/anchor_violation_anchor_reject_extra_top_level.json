@@ -1,0 +1,48 @@
+{
+  "case": "anchor_violation_anchor_reject_extra_top_level",
+  "entry": "schema.validate",
+  "covers": ["C-AV-2"],
+  "negative": true,
+  "input": {
+    "schema_ref": "#/$defs/C2_Anchor",
+    "instances": [
+      {
+        "id": "a1",
+        "kind": "goal",
+        "predicate": "pred-ref",
+        "lifecycle": {"state": "Active"},
+        "registered_at": "2026-06-12T00:00:00+00:00",
+        "registered_by": "actor-1",
+        "content": "the goal text",
+        "ref": "doc#3",
+        "origin": "human"
+      },
+      {
+        "kind": "goal",
+        "id": "a1"
+      },
+      {
+        "id": "a1",
+        "kind": "goal",
+        "predicate": "pred-ref",
+        "lifecycle": {"state": "Active"},
+        "registered_at": "2026-06-12T00:00:00+00:00",
+        "registered_by": "actor-1"
+      }
+    ]
+  },
+  "expected": {
+    "summary": "C-AV-2 (MUST NOT add top-level fields content/ref/origin/predicate to the anchor). HONESTY SCOPING — this fixture validates against #/$defs/C2_Anchor, the DATA-MODEL anchor, NOT the protocol-layer {kind,id} anchor. What is GENUINELY black-box pinned: instance[0] carries fields (content/ref/origin) that are extra BEYOND the C2 shape, so additionalProperties:false rejects it with an 'Additional properties' error naming content/ref/origin — this pins the data-model layer's refusal of arbitrary rich top-level anchor fields (the C-AV-2 spirit). instance[2] is the same shape WITHOUT those extras and is VALID — a control isolating that ONLY the extras (not the {id,kind} pair or the C2-required fields) drive instance[0]'s rejection, so the rejection is for the additional-properties reason and not collateral. WHY the protocol-minimal aspect is NOT claimed here: in C2_Anchor, predicate/lifecycle/registered_at/registered_by are REQUIRED, NOT forbidden extras. instance[1] is the protocol-minimal {kind,id} and C2_Anchor REJECTS it for MISSING-required ('predicate' is a required property), the OPPOSITE of C-AV-2's protocol-layer claim that {kind,id} must reject predicate as a forbidden top-level field. So this schema CANNOT host the 'protocol Anchor rejects predicate/content/ref/origin as forbidden top-level fields' limb — that limb is recorded as an ATTESTATION RESIDUAL: the protocol Anchor dataclass (aperture/core.py:Anchor, frozen+slots, exactly {kind,id}) enforces minimality BY CONSTRUCTION (constructing Anchor(kind=..., id=..., predicate=...) raises TypeError — no top-level field can be added), and no methodology $def models the protocol-minimal anchor, so no black-box wire fixture can exercise it. Every assertion below is true for the right reason: extra-fields rejection (instance[0]), missing-required demonstrating predicate-is-required-not-forbidden (instance[1]), clean validity of the no-extras shape (instance[2]).",
+    "assertions": [
+      {"path": "/results/0/valid", "equals": false},
+      {"path": "/results/0/error", "contains": "Additional properties"},
+      {"path": "/results/0/error", "contains": "content"},
+      {"path": "/results/0/error", "contains": "ref"},
+      {"path": "/results/0/error", "contains": "origin"},
+      {"path": "/results/1/valid", "equals": false},
+      {"path": "/results/1/error", "contains": "predicate"},
+      {"path": "/results/1/error", "contains": "required"},
+      {"path": "/results/2/valid", "equals": true}
+    ]
+  }
+}

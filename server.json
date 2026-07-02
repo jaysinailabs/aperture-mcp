@@ -1,0 +1,24 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.jaysinailabs/aperture-mcp",
+  "description": "Flag when a tracked commitment vanishes verbatim between two versions. A signal, not a judge.",
+  "title": "Aperture MCP",
+  "version": "0.1.0",
+  "websiteUrl": "https://github.com/jaysinailabs/aperture-mcp",
+  "repository": {
+    "url": "https://github.com/jaysinailabs/aperture-mcp",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "aperture-mcp",
+      "version": "0.1.0",
+      "runtimeHint": "uvx",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
