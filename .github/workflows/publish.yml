@@ -79,3 +79,42 @@ jobs:
 
       - name: Publish distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+
+  registry:
+    name: Publish to MCP Registry
+    needs: pypi
+    if: ${{ startsWith(github.ref_name, 'v') && !contains(github.ref_name, '-') && !contains(github.ref_name, 'rc') }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify stable tag matches server.json version
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+
+          tag = os.environ["GITHUB_REF_NAME"]
+
+          with open("server.json", "rb") as handle:
+              version = json.load(handle)["version"]
+
+          expected = f"v{version}"
+          if expected != tag:
+              raise SystemExit(
+                  f"server.json version {version!r} does not match tag {tag!r}"
+              )
+          PY
+
+      - name: Install mcp-publisher
+        run: |
+          curl -sSL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar -xz mcp-publisher
+
+      - name: Publish server.json to MCP Registry
+        run: |
+          ./mcp-publisher login github-oidc
+          ./mcp-publisher publish
