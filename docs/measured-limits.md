@@ -6,72 +6,102 @@ what it caught and missed on our gold corpus.
 
 ## The honest headline
 
-On a **41-case** internal gold corpus (curator-built, one scoring family per case, judged by an isolated panel):
+On a **100-case** internal gold corpus (curator-built, one scoring family per case, judged by an isolated panel):
 
 | Metric | Value | In plain words |
 | --- | --- | --- |
-| **Recall** | **0.375** | It caught **9 of 24** real drifts. It **missed ~62%.** |
-| **Precision** | **0.75** | Of its flags, **9 of 12 were real**; ~1 in 4 was noise. |
+| **Recall** | **0.400** | It caught **26 of 65** real drifts. It **missed 39 (fn_rate 0.600).** |
+| **Precision** | **0.667** | Of its **39 flags**, **26 were real**; ~1 in 3 was noise. |
+| **Abstain** | **9** | It **declined** rather than guess on 9 cases. |
 
-A recall-0.38 / precision-0.75 heuristic is **not a gate** and we don’t market it as one. It is a
+The full confusion matrix: **tp 26, fp 13, tn 13, fn 39, abstain 9** (100 cases). A
+recall-0.40 / precision-0.67 heuristic is **not a gate** and we don’t market it as one. It is a
 *signal* you verify on every fire and never read as “all clear.” Its value is that the **one thing it
-does reliably, it does at recall 1.0** — and it is honest about the rest.
+does reliably — catch a verbatim deletion — it caught on every case in the corpus (24 of 24)**, and it
+is honest about the rest. (It is still a heuristic; 24/24 is the corpus, not a guarantee for all time.)
+
+### Precision fell vs. the old 41-case figures — on purpose
+
+The previous public numbers were **recall 0.375 / precision 0.75** on a 41-case corpus. In v1
+**precision drops to 0.667** (recall is roughly flat, 0.375→0.400) because we deliberately **added the
+hard drift types the tool is designed to miss** — cap/carve-out obligation weakening, modal softening,
+negation flips, numeric changes, scope narrowing, hedging — plus meaning-preserving rewrites that draw
+false flags. This is a **more complete, more honest measurement, not a regression and not a
+newly-worse tool.** The engine did not get worse; the exam got harder and fairer.
+
+### Read the recall figure as *stress-weighted*, not real-world
+
+The corpus is **deliberately weighted toward hard blind-spot drift types** — it is a **probe of where
+the tool is blind, not a random sample of real-world edits.** So **recall 0.40 is a stress-weighted
+figure**; real-world recall on a typical edit stream (where verbatim deletion is more common) may
+differ. The one signal you can rely on in either setting is **verbatim deletion.**
 
 ## Per-family: what trips it, what slips past
 
-Each number below is a **real drop** (a commitment that genuinely changed); **Caught** is how many the
-tool flagged. They reconcile to the headline: **Caught** sums to **9**, **Real drops** to **24**, recall **0.375**.
+Recall splits by **one mechanism**: did the tracked anchor text survive the edit? Every row reconciles
+to the headline — **Real drifts** sum to **65**, **Caught** to **26**, recall **0.400**.
 
-| Drift family | Real drops | Caught | Recall |
+| What changed | Real drifts | Caught | Recall |
 | --- | --- | --- | --- |
-| **commitment_drop** — a watched commitment deleted verbatim | 6 | 6 | **1.00** ✅ |
-| **cross_language** — a real drop in same-script non-English (Chinese) text | 2 | 2 | **1.00** ✅ |
-| semantic_drift — small sample, not load-bearing | 1 | 1 | 1.00 |
-| factual_revision | 2 | 0 | 0.00 ❌ |
-| modal_strength (“must” → “should”) | 4 | 0 | 0.00 ❌ |
-| negation (added/removed “not”) | 4 | 0 | 0.00 ❌ |
-| scope (narrowed/widened) | 3 | 0 | 0.00 ❌ |
-| numeric (a threshold quietly changed) | 1 | 0 | 0.00 ❌ |
-| paraphrase_weakening (reworded softer) | 1 | 0 | 0.00 ❌ |
-| **Total — distinct real drops** | **24** | **9** | **0.375** |
+| **Anchor deleted verbatim** — a named commitment or clause removed word-for-word, incl. real decision-doc drops where the anchor phrase itself vanished | 24 | 24 | **1.00** ✅ |
+| **Anchor text survived** — the obligation was gutted by an added cap, carve-out, or superseding clause; a modal softened (“must”→“should”); a negation flipped; a number/scope moved; a commitment hedged — while the named anchor stayed present, so the substring still matched | 35 | 0 | **0.00** ❌ |
+| **Other self-checks** — proposal / stance profiles (original corpus) | 6 | 2 | 0.33 |
+| **Total — real drifts** | **65** | **26** | **0.400** |
 
-Recall is high only for **verbatim deletion** (commitment_drop, and a same-script cross-language drop) —
-everything semantic is missed.
+The story is one line: **when the anchor phrase is deleted, it catches it (24 of 24); when the wording
+survives but the meaning weakened, it misses it (0 of 35).** That is the whole product — a substring
+tripwire, blind to everything that keeps the substring.
 
-**No-drift controls are kept out of the table above** (recall is about catching *real* drifts): the
-41-case corpus also holds faithful **translations** and **high-surface paraphrases** where nothing
-actually changed. On the 2 cross-language translations the tool **abstains** (`degraded`, **fp 0**) —
-correctly declining rather than false-flagging a preserved-but-translated commitment. Its false flags
-live elsewhere: **precision 0.75** = 9 real of 12 flags, i.e. **3 false flags** (high-surface same-script
-rewrites / no-drift controls). **Design limit:** a commitment that is *both* dropped *and* translated out
-of the text would be abstained-on, not caught.
+Recall is meaningful only for **verbatim deletion** — a named commitment or clause removed
+word-for-word, and real decision-doc drops where the anchor phrase itself vanished. **Everything on
+the semantic-weakening surface is missed** (fn_rate ≈ 1.0 for that aggregate row): the obligation was
+gutted by an added cap, carve-out, or superseding clause; the modal was softened; a negation flipped;
+a threshold moved — while the named anchor text **survived**, so the substring match still passes.
 
-**Read it like this:** Aperture MCP reliably catches a commitment that was **deleted word-for-word**. It
-is essentially blind to commitments that were **reworded, softened, paraphrased, re-scoped, negated,
-or had a number changed** — which is how commitments most often erode in real documents — and it
-**declines/abstains** on a commitment that was merely **translated** (it can't compare verbatim across
-scripts, so it returns `degraded` rather than false-flag).
+**No-drift controls are kept out of the recall table** (recall is about catching *real* drifts). The
+corpus also holds meaning-**preserving** rewrites — paraphrases, synonym swaps, active→passive,
+defined-term substitutions, reorderings — where the anchor substring vanished even though nothing
+actually changed. Those drive the **precision** cost: **13 false flags** of 39 (precision 0.667). And
+on cases it cannot compare verbatim across scripts it **abstains** (9 cases) rather than false-flag.
+
+## Two things v1 now measures that the old corpus did not
+
+**The silent-“ok” false negative.** Via the commitment self-check, the engine can confidently return
+“no dropped commitments detected” while the obligation was actually **gutted by an added cap,
+carve-out, or softening clause** and the named anchor survived verbatim. This is the scariest miss —
+the tool reports *clear* while the promise quietly weakened — and it was **untested** before v1. It is
+now in the corpus, and it is a **known blind spot**, not a solved one.
+
+**Dogfooded on our own documents.** v1 was run against **real git revisions of our own planning,
+charter, and positioning docs**. It caught verbatim removals — and it **missed** softenings of
+Aperture’s **own** positioning commitments, e.g. a mission line whose meaning weakened across a
+revision while the anchor phrase survived, so the edit slipped past. We keep those misses in the
+corpus precisely because they are the honest picture: the tool is blind to semantic weakening even
+when the document is our own. The corpus spans **English contract clauses and Chinese decision
+documents**.
 
 ## Why we shipped it anyway
 
 Because the narrow signal is real, cheap, local, and *legible* — and because the alternative (a
 semantic detector) is a different, much heavier project we deliberately have not built. A tool that
-catches one drift mode at recall 1.0 and **tells you plainly it catches little else** is more useful
+catches verbatim deletion reliably and **tells you plainly it catches little else** is more useful
 than one that claims broad “drift detection” and quietly fails open. If your commitments live in text
 an agent edits, watching for their verbatim disappearance is a real, if humble, line of defense.
 
 ## Caveats on these numbers
 
-- The corpus is **small (n=41)** and curator-built; treat the figures as **directional**, not a
-  benchmark leaderboard. The corpus itself is kept private; the *measurements* are
-  public.
-- The **Real drops** column counts each family's **drift (positive-truth)** cases; they sum to the **24**
-  distinct real drifts, and **Caught** sums to **9** (recall 0.375). The full 41-case corpus also holds
-  **no-drift control** cases (faithful translations, high-surface paraphrases, and negatives mixed into
-  some families); those bear on **precision** (0.75 — 3 false flags of 12), not recall, so they are not in
-  the recall table above.
+- **Precision fell because the exam got harder, not the tool worse.** v1 deliberately added the hard,
+  semantic drift types the tool is designed to miss (plus meaning-preserving rewrites that draw false
+  flags); precision dropped 0.75→0.667 while recall held roughly flat (0.375→0.400) on a much larger,
+  harder corpus. That is a **more honest** measurement, not a regression — don’t read the figures as an
+  easy score.
+- **The corpus is a probe, not a sample.** It is deliberately weighted toward hard blind-spot drift
+  types, so **recall 0.40 is stress-weighted** and not an estimate of real-world catch rate. The one
+  reliable signal remains **verbatim deletion.**
+- **Precision costs are real rewrites.** 13 false flags of 39 come from meaning-preserving
+  paraphrase / synonym / reordering edits where the anchor substring vanished — not from bugs.
 - Numbers are **deterministic** (no model in the scoring path), produced by our internal scoring
   harness against the **private** gold corpus — which is intentionally **not** bundled, so the figures
-  can't be regenerated from this repo alone.
+  can’t be regenerated from this repo alone. The *measurements* are public; the corpus stays private.
 - Help us improve them: real-world misses and false-flags are the most valuable contribution — see
   [CONTRIBUTING.md](../CONTRIBUTING.md).

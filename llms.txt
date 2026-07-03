@@ -17,7 +17,9 @@ structured `DeltaResult` with an 8-value status and the matched violations.
 
 It does not understand meaning. It is a heuristic with measured, published blind spots:
 - It MISSES commitments that were reworded, softened ("must"→"should"), paraphrased, re-scoped,
-  negated, or had a number changed. On the project's gold corpus, overall recall is ~0.375.
+  negated, or had a number changed. On the project's gold corpus, overall recall is ~0.40 (26 of 65
+  real drifts caught on a 100-case corpus, precision ~0.667); the corpus is deliberately weighted
+  toward hard blind-spot drift types, so treat this as a stress-weighted figure, not real-world recall.
 - It DECLINES/abstains on commitments that were merely **translated** — WHEN the anchor is
   natural-language text: it can't compare verbatim across scripts, so it returns `degraded`
   (false-positive rate 0) rather than false-flag. NOTE: a **code-identifier** anchor (e.g.
@@ -29,8 +31,9 @@ It does not understand meaning. It is a heuristic with measured, published blind
 - It is not a gate, a judge, a ranker, or a semantic analyzer. Treat every flag as "look here," and
   never assume silence means nothing drifted.
 
-The one thing it does reliably (recall 1.0) is catch a commitment that was deleted verbatim. That
-narrow, honest signal is the product.
+The one thing it does reliably — catch a commitment deleted verbatim — it caught on all 24 such cases
+in the gold corpus (24/24; it is a heuristic, so treat that as the corpus result, not a guarantee).
+That narrow, honest signal is the product.
 
 ## Key links
 

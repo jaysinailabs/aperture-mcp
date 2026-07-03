@@ -120,8 +120,8 @@ number instead of deleting it, and it’ll slip past. Better you hear that now.
 
 Aperture MCP is a **heuristic**. We measured it on our own gold corpus and we publish the numbers
 instead of a single flattering score, because *knowing where it’s blind is the product* —
-**recall 0.375, precision 0.75** on a 41-case corpus (it catches 9 of 24 real drifts; ~1 flag in 4 is
-noise), full breakdown in [docs/measured-limits.md](docs/measured-limits.md):
+**recall 0.400, precision 0.667** on a 100-case corpus (it catches 26 of 65 real drifts; ~1 flag in 3
+is noise), full breakdown in [docs/measured-limits.md](docs/measured-limits.md):
 
 | Kind of change | Does Aperture MCP flag it? |
 | --- | --- |
