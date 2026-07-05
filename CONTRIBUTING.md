@@ -1,13 +1,13 @@
-# Contributing to Aperture MCP
+# Contributing to Aperture
 
 **English** · [简体中文](./CONTRIBUTING.zh-CN.md)
 
-Thanks for looking. Aperture MCP is small on purpose, and its most valuable contributions are **honest
+Thanks for looking. Aperture is small on purpose, and its most valuable contributions are **honest
 reports of where it works and where it doesn’t** — not just code.
 
 ## The single most useful thing you can do
 
-Point Aperture MCP at **your own** versioned decision docs (specs, plans, ADRs, charters) and tell us:
+Point Aperture at **your own** versioned decision docs (specs, plans, ADRs, charters) and tell us:
 
 - a real **drop it caught** that mattered, or
 - a real **drift it missed** (a reworded / softened / paraphrased commitment it stayed silent on), or

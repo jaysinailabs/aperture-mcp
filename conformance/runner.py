@@ -28,6 +28,7 @@ from aperture import (  # noqa: E402
     DeltaHistoryRetriever,
     DeltaHistoryStore,
     DeltaResult,
+    __version__,
     compare,
     compare_commitment,
     compare_proposal,
@@ -236,7 +237,7 @@ def _run_openai_tool_call(payload: Mapping[str, Any]) -> Actual:
         raise FixtureError(f"unknown OpenAI tool: {tool}")
     _validate_openai_arguments(tool, arguments, tools)
     if tool == "health":
-        return Actual(value={"status": "ok", "name": "aperture", "version": "0.1.0"})
+        return Actual(value={"status": "ok", "name": "aperture", "version": __version__})
     actual = _run_compare(tool, arguments)
     return actual
 

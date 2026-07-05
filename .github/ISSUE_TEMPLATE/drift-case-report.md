@@ -1,6 +1,6 @@
 ---
 name: Drift case report / 漂移案例报告 (most valuable!)
-about: Where Aperture MCP tripped, missed, or false-flagged on your real decision docs / Aperture MCP 在你真实决策文档上触发、漏报或误报的地方
+about: Where Aperture tripped, missed, or false-flagged on your real decision docs / Aperture 在你真实决策文档上触发、漏报或误报的地方
 title: "[case] "
 labels: ["drift-case"]
 ---

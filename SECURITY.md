@@ -2,7 +2,7 @@
 
 ## Privacy posture
 
-Aperture MCP is designed to be boring on privacy, in the good way:
+Aperture is designed to be boring on privacy, in the good way:
 
 - **Local by default.** The library and the MCP server run in your process. They make **no network
   calls**.
@@ -21,7 +21,7 @@ a reasonable window before public disclosure.
 
 ## Scope notes
 
-Aperture MCP is a **heuristic signal, not a security control**. It misses reworded commitments,
+Aperture is a **heuristic signal, not a security control**. It misses reworded commitments,
 **declines/abstains** on translated ones (returns `degraded`, never false-flags across scripts), and
 still false-flags reformatted ones (see the README limits table). Do **not** wire it as a sole gate on
 anything that matters — treat every flag as “look here,” and never assume silence means nothing changed.

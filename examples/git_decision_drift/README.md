@@ -55,6 +55,6 @@ for r in decision_drift_from_git(
   scripts). A commitment that was *reformatted* (same script, words rearranged) is still
   **false-flagged** as dropped.
 - **A trip is not a verdict.** The disappearance may be a deliberate scope cut or real silent drift;
-  a human decides — Aperture MCP surfaces it, it does not adjudicate.
+  a human decides — Aperture surfaces it, it does not adjudicate.
 
 Pick watchlist tokens that are short, punctuation-free, same-language as the doc, and stable.

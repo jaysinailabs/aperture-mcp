@@ -135,7 +135,7 @@ def _anchors_from_dicts(anchors: list[Any] | None) -> list[Anchor]:
 
 
 _SERVER_INSTRUCTIONS = """\
-Aperture MCP flags when a tracked commitment is dropped, a stance reversed, a
+Aperture flags when a tracked commitment is dropped, a stance reversed, a
 proposal weakened, or a named constraint violated — verbatim, between two text
 states of the SAME decision (across turns, sessions, or agents). A signal, not
 a judge: it surfaces candidate drift for you to check; it does NOT decide, rank,

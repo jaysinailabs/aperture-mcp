@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Aperture commitment tripwire — standalone git pre-commit hook.
+#
+# Deterministic, LLM-free. Runs `aperture check --staged` so it compares the STAGED
+# blobs (what you are about to commit) against HEAD, and honors its exit code: a
+# watched commitment that vanished verbatim blocks the commit (unless fail_on_drop=false
+# in .aperture.toml, or you bypass with `git commit --no-verify`).
+#
+# Install:
+#   cp examples/hooks/pre-commit .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+#
+# Requires `aperture` on PATH (pip install aperture-mcp). If it is not installed the
+# hook prints a note and lets the commit through (fail-open — a tripwire must not brick
+# commits just because it is absent).
+set -euo pipefail
+
+if ! command -v aperture >/dev/null 2>&1; then
+    echo "aperture: not installed (pip install aperture-mcp) — skipping commitment tripwire." >&2
+    exit 0
+fi
+
+exec aperture check --staged

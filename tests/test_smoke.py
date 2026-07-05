@@ -1,4 +1,4 @@
-"""Smoke tests for the public Aperture MCP package.
+"""Smoke tests for the public aperture-mcp package.
 
 The contract is covered in depth by the conformance suite (``conformance/runner.py``); these are a
 fast sanity layer that the package imports and the one capability it reliably has — verbatim

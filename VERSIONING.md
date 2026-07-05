@@ -1,12 +1,12 @@
 # Versioning & compatibility
 
-Aperture MCP has **two version numbers that move independently**. Knowing which one you depend on tells
+Aperture has **two version numbers that move independently**. Knowing which one you depend on tells
 you what is safe to upgrade.
 
 ## 1. The package version (`aperture-mcp` on PyPI)
 
 Follows [Semantic Versioning](https://semver.org). **We are pre-1.0 (`0.x`)**, so per SemVer a
-**minor** bump may contain breaking changes. Pin accordingly (e.g. `aperture-mcp~=0.1`) until 1.0.
+**minor** bump may contain breaking changes. Pin accordingly (e.g. `aperture-mcp~=0.2`) until 1.0.
 
 A change is **breaking** (and bumps the appropriate version) if it alters any of:
 
@@ -27,7 +27,7 @@ improvements that don’t change the output shape, docs, and the wording of `rea
 
 The protocol contract is versioned separately and is currently **`v0.2` (frozen)**, covered by a
 language-agnostic conformance suite. The contract version changes only on a deliberate, reviewed
-protocol revision — *not* on every package release. The package version being `0.1.x` while the
+protocol revision — *not* on every package release. The package version being `0.2.x` while the
 contract is `v0.2` is intentional: the **package** is early; the **contract** it implements is the
 frozen v0.2.
 
@@ -45,6 +45,6 @@ version**. If you depend on the Python API or the MCP tool surface, depend on th
 ## What “frozen” does and doesn’t promise
 
 `v0.2-frozen` means the **shape and semantics** of the contract won’t silently change. It does **not**
-promise the heuristic gets more accurate — Aperture MCP’s known blind spots (misses reworded/paraphrased
+promise the heuristic gets more accurate — Aperture’s known blind spots (misses reworded/paraphrased
 commitments; declines/abstains on translations; still false-flags reformats) are documented limits,
 not bugs scheduled for a patch. See the limits table in the [README](./README.md).

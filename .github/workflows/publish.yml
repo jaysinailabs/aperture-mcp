@@ -63,7 +63,10 @@ jobs:
           version="$(
             .tmp_publish_wheel/bin/aperture-mcp --version
           )"
-          test "$version" = "aperture-mcp 0.1.0"
+          # Derive the expected version from the release tag (v0.2.0 -> 0.2.0) so this
+          # assertion never goes stale across releases.
+          expected_version="${GITHUB_REF_NAME#v}"
+          test "$version" = "aperture-mcp ${expected_version}"
           .tmp_publish_wheel/bin/python - <<'PY'
           from aperture import Anchor, AnchorKind, compare
 

@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aperture-mcp"
-version = "0.1.0"
-description = "A commitment tripwire for AI-edited decision docs: flags when a tracked commitment disappears, word-for-word, between two versions. MCP server + Python library. A signal, not a judge."
+version = "0.2.0"
+description = "A commitment tripwire for AI-edited decision docs: flags when a tracked commitment disappears, word-for-word, between two versions — as a git pre-commit hook, a CLI, or an MCP server. A signal, not a judge."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
@@ -17,6 +17,8 @@ keywords = [
     "agents",
     "decision-drift",
     "commitment",
+    "git-hook",
+    "pre-commit",
     "self-consistency",
     "adr",
     "spec",
@@ -37,6 +39,9 @@ dependencies = ["mcp>=1.27.2,<2"]
 
 [project.scripts]
 aperture-mcp = "aperture.mcp_server:main"
+# `aperture` — the deterministic, LLM-free commitment-drift CLI / git-preflight
+# (`aperture check`). Stdlib-only over the frozen core; adds no runtime dependency.
+aperture = "aperture.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/jaysinailabs/aperture-mcp"

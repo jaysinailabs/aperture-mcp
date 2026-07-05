@@ -3,7 +3,7 @@
   "name": "io.github.jaysinailabs/aperture-mcp",
   "description": "Flag when a tracked commitment vanishes verbatim between two versions. A signal, not a judge.",
   "title": "Aperture MCP",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "websiteUrl": "https://github.com/jaysinailabs/aperture-mcp",
   "repository": {
     "url": "https://github.com/jaysinailabs/aperture-mcp",
@@ -14,7 +14,7 @@
       "registryType": "pypi",
       "registryBaseUrl": "https://pypi.org",
       "identifier": "aperture-mcp",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "runtimeHint": "uvx",
       "transport": {
         "type": "stdio"

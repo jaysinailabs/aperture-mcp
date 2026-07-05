@@ -1,0 +1,21 @@
+# pre-commit.com hook definition for Aperture's commitment tripwire.
+#
+# Reference it from your own .pre-commit-config.yaml:
+#   repos:
+#     - repo: https://github.com/jaysinailabs/aperture-mcp
+#       rev: v0.2.0
+#       hooks:
+#         - id: aperture-commitment-drift
+#
+# Deterministic, LLM-free. `aperture check` reads .aperture.toml at the consumer's
+# repo root and flags watched commitments that vanished verbatim (HEAD -> working
+# tree). A signal, not a judge — blind to paraphrase; catches only verbatim drop.
+- id: aperture-commitment-drift
+  name: Aperture commitment tripwire
+  description: Flag watched commitments that vanished verbatim between HEAD and the commit.
+  entry: aperture check --staged
+  language: python
+  # Aperture reads its OWN .aperture.toml watchlist, not the staged file list.
+  pass_filenames: false
+  # Run on every commit regardless of which files changed (the watchlist decides scope).
+  always_run: true

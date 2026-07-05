@@ -28,9 +28,9 @@ Minimal steps or a code snippet. If it involves `compare`, include the `state_a`
 - OS / 操作系统:
 - MCP client (if relevant) / MCP 客户端(若相关):
 
-> Reminder: Aperture MCP is a heuristic with known blind spots (misses reworded commitments,
+> Reminder: Aperture is a heuristic with known blind spots (misses reworded commitments,
 > declines/abstains on translations, still false-flags reformats — see the
 > [limits](../../docs/measured-limits.md)). A missed/false-flagged *drift* is usually a
 > **drift case report**, not a bug.
-> 提醒:Aperture MCP 是有已知盲区的启发式(漏掉被改写的承诺、对翻译拒判(abstain)、对重排版仍误报——见
+> 提醒:Aperture 是有已知盲区的启发式(漏掉被改写的承诺、对翻译拒判(abstain)、对重排版仍误报——见
 > [局限](../../docs/measured-limits.md))。漏报/误报*漂移*通常应走 **drift case report**,而非 bug。

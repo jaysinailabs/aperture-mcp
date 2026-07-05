@@ -1,0 +1,36 @@
+# Aperture commitment tripwire — GitHub Action (pull-request preflight).
+#
+# Deterministic, LLM-free. On every PR it runs `aperture check` comparing the PR base
+# commit against the PR head commit, and flags every watched commitment (from the
+# repo's .aperture.toml) that vanished verbatim. A dropped commitment fails the check
+# (unless fail_on_drop=false / --warn-only). A signal, not a judge — blind to
+# paraphrase; catches only verbatim disappearance.
+#
+# Drop this at .github/workflows/aperture-check.yml in your repo, alongside a
+# .aperture.toml watchlist at the repo root.
+name: aperture-commitment-drift
+
+on:
+  pull_request:
+
+jobs:
+  commitment-tripwire:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Need both base and head commits present so the two refs resolve.
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Aperture
+        run: pip install aperture-mcp
+
+      - name: Check for silently-dropped commitments
+        run: >-
+          aperture check
+          --ref-a ${{ github.event.pull_request.base.sha }}
+          --ref-b ${{ github.sha }}

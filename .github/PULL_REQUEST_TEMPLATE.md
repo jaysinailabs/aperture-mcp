@@ -10,7 +10,7 @@ A short description. / 简短描述。
 - [ ] If this changes what the tool can or can't see, the **limits** are updated in the same PR
       (README table + `docs/measured-limits.md`).
       若改变了“工具能看见 / 看不见什么”,在**同一 PR**里更新局限(README 表 + `docs/measured-limits.md`)。
-- [ ] No new over-claim: nothing implies Aperture MCP catches drift it doesn't (verbatim substrings only;
+- [ ] No new over-claim: nothing implies Aperture surfaces drift it doesn't (verbatim substrings only;
       misses rewording, declines/abstains on translation, still false-flags reformats).
       无新增 over-claim:没有任何措辞暗示它能抓它抓不到的漂移(只匹配逐字子串;漏改写、对翻译拒判(abstain)、对重排版仍误报)。
 - [ ] Tests / linters pass locally. / 本地测试 / linter 通过。

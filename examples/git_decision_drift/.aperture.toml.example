@@ -1,0 +1,34 @@
+# .aperture.toml — commitment-drift watchlist for the `aperture check` git preflight.
+#
+# Copy this to the ROOT of your repo as `.aperture.toml` and edit for your project:
+#     cp examples/git_decision_drift/.aperture.toml.example .aperture.toml
+#
+# `aperture check` reads this file, then runs the FROZEN, LLM-free compare engine over
+# two text states of each watched file (default: HEAD -> working tree) and flags every
+# watched commitment whose VERBATIM text disappeared. Wire it as a pre-commit hook (see
+# ../hooks/) and it fires on the commit event itself — deterministically, no model.
+#
+# It is a SIGNAL, NOT A JUDGE. It sees only verbatim disappearance of a watched
+# substring: it is blind to softening / paraphrase / rewrite (a reworded commitment
+# loses its token and reads as dropped; a weakening that keeps the token is missed).
+# A surfaced drop is a prompt to look, never a verdict that something is wrong.
+
+# Block the commit when a watched commitment drops (exit 1). Set false (or pass
+# --warn-only) to always exit 0 and just print. Optional; default true.
+fail_on_drop = true
+
+# One [[watch]] block per decision document (charter, spec, plan, ADR log, positioning).
+# `commitments` are the tokens tracked VERBATIM — keep them short, same-language as the
+# file, punctuation-free, stable, and matched case-insensitively as contiguous substrings.
+[[watch]]
+path = "CHARTER.md"
+commitments = [
+    "never train on your data",
+    "data stays on the device",
+]
+
+[[watch]]
+path = "docs/positioning.md"
+commitments = [
+    "a signal, not a judge",
+]

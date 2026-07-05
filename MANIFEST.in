@@ -1,4 +1,5 @@
-include LICENSE README.md README.zh-CN.md CHANGELOG.md CONTRIBUTING.md CONTRIBUTING.zh-CN.md VERSIONING.md SECURITY.md CODE_OF_CONDUCT.md llms.txt server.json
+include LICENSE README.md README.zh-CN.md CHANGELOG.md CONTRIBUTING.md CONTRIBUTING.zh-CN.md VERSIONING.md SECURITY.md CODE_OF_CONDUCT.md llms.txt server.json .pre-commit-hooks.yaml
 recursive-include conformance *.py *.json
-recursive-include examples *.py *.md
+recursive-include examples *.py *.md *.yml *.yaml *.example
+include examples/hooks/pre-commit
 recursive-include docs *.md

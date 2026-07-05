@@ -96,11 +96,11 @@ if __name__ == "__main__":
     watchlist = ["ci-gates-green", "data-never-leaves-device"]
     results = decision_drift(before, after, watchlist)
 
-    print("Aperture MCP · commitment tripwire — a fixture/sample decision-doc edit\n")
+    print("Aperture · commitment tripwire — a fixture/sample decision-doc edit\n")
     print(_format(results))
     print()
     print("  One watched commitment vanished between the two versions; one held.")
-    print("  Aperture MCP makes the disappearance visible — you decide whether it was intended.")
+    print("  Aperture makes the disappearance visible — you decide whether it was intended.")
 
     by_token = {r.commitment: r for r in results}
     assert by_token["ci-gates-green"].tripped is True

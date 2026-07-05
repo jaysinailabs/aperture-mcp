@@ -1,6 +1,6 @@
 # How well does it actually work? (measured)
 
-We publish these numbers instead of a single flattering score, because **knowing where Aperture MCP is
+We publish these numbers instead of a single flattering score, because **knowing where Aperture is
 blind is the product.** A tripwire you can’t trust is worse than no tripwire — so here is exactly
 what it caught and missed on our gold corpus.
 
@@ -22,7 +22,7 @@ is honest about the rest. (It is still a heuristic; 24/24 is the corpus, not a g
 
 ### Precision fell vs. the old 41-case figures — on purpose
 
-The previous public numbers were **recall 0.375 / precision 0.75** on a 41-case corpus. In v1
+The previous public numbers were **recall 0.375 / precision 0.75** on a 41-case corpus. On the v1 gold corpus (100 cases)
 **precision drops to 0.667** (recall is roughly flat, 0.375→0.400) because we deliberately **added the
 hard drift types the tool is designed to miss** — cap/carve-out obligation weakening, modal softening,
 negation flips, numeric changes, scope narrowing, hedging — plus meaning-preserving rewrites that draw
