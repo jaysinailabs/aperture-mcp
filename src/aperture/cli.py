@@ -47,10 +47,18 @@ class WatchEntry:
 
 
 def _git(repo: str, *args: str) -> subprocess.CompletedProcess[str]:
+    # Explicit UTF-8: git emits raw blob bytes regardless of locale. Left to the
+    # locale codec (e.g. GBK on Chinese Windows), a decode failure happens inside
+    # subprocess's reader thread and surfaces as stdout=None with returncode 0 —
+    # indistinguishable from "path absent at this ref", which fails open.
+    # errors="replace" keeps a genuinely non-UTF-8 blob from re-raising in that
+    # same thread; its mangled text is then caught by the UNTRACKABLE guard.
     return subprocess.run(
         ["git", "-C", repo, *args],
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
     )
 
 
@@ -191,6 +199,7 @@ def _cmd_check(args: argparse.Namespace) -> int:
     b_label = _after_label(ref_b, args.staged)
 
     drops: list[Drop] = []
+    untrackable: list[Drop] = []
     watched_count = 0
     for entry in entries:
         watched_count += len(entry.commitments)
@@ -198,9 +207,19 @@ def _cmd_check(args: argparse.Namespace) -> int:
         after = _after_text(repo, ref_b, args.staged, entry.path)
         for commitment in _dropped_for_entry(before, after, entry.commitments):
             drops.append(Drop(path=entry.path, commitment=commitment))
+        # Fail closed on commitments the check cannot actually see: watched text
+        # found in NEITHER state means the watchlist is not guarding it (wrong
+        # [[watch]] path, misquoted wording, non-UTF-8 file). Absent-from-before
+        # but present-in-after stays legal — a newly adopted commitment landing
+        # in the same change as its watch entry. Same match rule as the engine:
+        # case-insensitive contiguous substring.
+        for commitment in entry.commitments:
+            needle = commitment.lower()
+            if needle not in before.lower() and needle not in after.lower():
+                untrackable.append(Drop(path=entry.path, commitment=commitment))
 
     print("Aperture · commitment tripwire")
-    if not drops:
+    if not drops and not untrackable:
         print(
             f"  all {watched_count} watched commitment(s) across {len(entries)} file(s) intact "
             f"({a_label} -> {b_label})."
@@ -209,18 +228,34 @@ def _cmd_check(args: argparse.Namespace) -> int:
 
     for drop in drops:
         print(f'  {drop.path}  commitment "{drop.commitment}"  DROPPED  ({a_label} -> {b_label})')
-    n = len(drops)
-    noun = "commitment" if n == 1 else "commitments"
-    print(
-        f"{n} watched {noun} vanished verbatim. A signal, not a verdict — confirm it was intended."
-    )
-    print(
-        "(Aperture is blind to softening/paraphrase; it only sees verbatim disappearance. "
-        "Bypass: git commit --no-verify)"
-    )
+    for miss in untrackable:
+        print(
+            f'  {miss.path}  commitment "{miss.commitment}"  UNTRACKABLE  '
+            f"(found in neither {a_label} nor {b_label})"
+        )
+    if drops:
+        n = len(drops)
+        noun = "commitment" if n == 1 else "commitments"
+        print(
+            f"{n} watched {noun} vanished verbatim. "
+            "A signal, not a verdict — confirm it was intended."
+        )
+        print(
+            "(Aperture is blind to softening/paraphrase; it only sees verbatim disappearance. "
+            "Bypass: git commit --no-verify)"
+        )
+    if untrackable:
+        n = len(untrackable)
+        noun = "commitment" if n == 1 else "commitments"
+        print(
+            f"{n} watched {noun} found in neither state — the watchlist is NOT guarding "
+            "them. Check the [[watch]] path, the exact wording, and that the file is UTF-8."
+        )
 
     blocking = fail_on_drop and not args.warn_only
-    return 1 if blocking else 0
+    if not blocking:
+        return 0
+    return 1 if drops else 2
 
 
 # --------------------------------------------------------------------------- argparse
